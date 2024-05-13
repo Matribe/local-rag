@@ -73,7 +73,7 @@ class Chat:
                 f.write(file_contents)
 
             with st.session_state["ingestion_spinner"], st.spinner(f"Ingesting {file.name}"):
-                st.session_state["assistant"].ingest("uploads/" + file.name)
+                st.session_state["assistant"].add_files("uploads/" + file.name)
 
 
 

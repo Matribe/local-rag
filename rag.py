@@ -4,6 +4,7 @@ from langchain.prompts import PromptTemplate
 from ingest import Ingest
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
+from langchain_core.runnables import ConfigurableField
 
 # RAG : Retrieval Augmented Generation
 
@@ -28,10 +29,10 @@ class ChatPDF:
         )
 
 
-    def ingest(self, file_path: str):
-        ingest = Ingest(file_path, self.text_splitter, self.prompt, self.model)
+    def add_files(self, file_path: str):
+        files = Ingest(file_path, self.text_splitter)
 
-        self.retriever = ingest.retriever
+        self.retriever = files.retriever
         
         self.chain = ({"context": self.retriever, "question": RunnablePassthrough()}
                     | self.prompt
@@ -39,10 +40,10 @@ class ChatPDF:
                     | StrOutputParser())
 
 
-    def ask(self, query: str):
+    def ask(self, query: str, max_len = 1024):
         if not self.chain:
             return "Please, add a PDF document first."
-
+        self.model = ChatOllama(model="mistral", num_predict=max_len)
         return self.chain.invoke(query)
 
 

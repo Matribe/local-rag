@@ -2,6 +2,9 @@ from langchain_community.document_loaders import PyPDFLoader, UnstructuredMarkdo
 
 
 class FileLoader:
+    '''
+        Allows to retrieve different types of files: md, pdf, and docx in order to be able to split them.    
+    '''
 
     def __init__(self, file_path):
         if file_path.endswith('.md'):
