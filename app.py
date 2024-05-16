@@ -70,6 +70,8 @@ class Chat:
         if os.path.exists("uploads"):
             shutil.rmtree("uploads")
             os.makedirs("uploads")
+        else:
+            os.makedirs("uploads")
 
         for file in st.session_state["file_uploader"]:
             file_contents = file.read()

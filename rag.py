@@ -4,7 +4,7 @@ from langchain.prompts import PromptTemplate
 from ingest import Ingest
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
-
+import os
 
 # RAG : Retrieval Augmented Generation
 
@@ -30,6 +30,7 @@ class ChatPDF:
 
 
     def add_files(self, document: str):
+        os.makedirs("uploads/", exist_ok=True)
         files = Ingest(document, self.text_splitter)
 
         self.retriever = files.retriever
