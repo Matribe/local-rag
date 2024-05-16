@@ -2,7 +2,7 @@ from langchain_community.vectorstores import Chroma
 from embedding import Embedding
 from vector_store import VectorStore
 from chunks import Chunks
-import os
+
 
 CHROMA_PATH = "chroma"
 

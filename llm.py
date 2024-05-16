@@ -2,7 +2,6 @@ from langchain_community.chat_models import ChatOllama
 from langchain.prompts import PromptTemplate
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
-import os
 
 from ingest import Ingest
 

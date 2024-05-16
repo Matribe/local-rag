@@ -1,6 +1,3 @@
-
-
-
 import os
 import shutil
 import streamlit as st
@@ -10,12 +7,13 @@ from llm import Llm
 CHROMA_PATH = "chroma"
 EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
 DATA_PATH = "data"
+UPLOADS_PATH = "uploads/"
 
 
 
 class Chat:
-    st.set_page_config(page_title="ChatPDF")
-    st.header("ChatPDF")
+    st.set_page_config(page_title="Chat with your documents")
+    st.header("Chat with your documents")
 
     def __init__(self):
         if "messages" not in st.session_state:
@@ -74,7 +72,7 @@ class Chat:
                 f.write(file_contents)
 
             with st.session_state["ingestion_spinner"], st.spinner(f"Ingesting {file.name}"):
-                st.session_state["assistant"].get_chat_chain("uploads/" + file.name)
+                st.session_state["assistant"].get_chat_chain(UPLOADS_PATH + file.name)
 
 
 
