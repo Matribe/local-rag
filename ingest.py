@@ -12,15 +12,15 @@ class Ingest:
 
     docs = None
 
-    def __init__(self, file_path: str, text_splitter, embedding_model = "BAAI/bge-base-en-v1.5"):
+    def __init__(self, document: str, text_splitter, embedding_model = "BAAI/bge-base-en-v1.5"):
         '''
             Args:
-                file_path : link to the folder containing the files
+                document : the file
                 text_splitter : splits the documents
                 embedding_model :  model used for embedding
         '''
 
-        self.docs = FileLoader(file_path=file_path).load()
+        self.docs = FileLoader(document=document).load()
 
         chunks = text_splitter.split_documents(self.docs)
         self.chunks = filter_complex_metadata(chunks)

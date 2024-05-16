@@ -29,8 +29,8 @@ class ChatPDF:
         )
 
 
-    def add_files(self, file_path: str):
-        files = Ingest(file_path, self.text_splitter)
+    def add_files(self, document: str):
+        files = Ingest(document, self.text_splitter)
 
         self.retriever = files.retriever
         

@@ -51,15 +51,10 @@ class ChromaManager:
                 json.dump({}, fichier_json)
                 return {}
     
+
+    
     def add_documents(self, list_of_documents, list_of_ids):
         self.collection.add(
             documents = list_of_documents,
             ids = list_of_ids
         )
-
-
-CHROMA_PATH = "chroma"
-EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
-DATA_PATH = "data"
-
-db = ChromaManager(CHROMA_PATH, DATA_PATH)
