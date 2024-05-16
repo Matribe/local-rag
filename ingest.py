@@ -1,52 +1,54 @@
-
 from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain.vectorstores.utils import filter_complex_metadata
+from embedding import Embedding
+from vector_store import VectorStore
+from chunks import Chunks
+import os
 
-from file_loader import FileLoader
+CHROMA_PATH = "chroma"
 
 class Ingest:
     '''
-        Enables converting documents into vectors of numbers for classifying different texts.
+        A class used to manage the ingestion and retrieval of documents into/from a vector store.
+
+        This class initializes with an embedding model and a vector store. It provides methods
+        to ingest documents by chunking them and adding them to the vector store, and to retrieve
+        similar documents based on a similarity score threshold.
+
+        Attributes
+        ----------
+        embedding : 
+            An instance of tembedding model used for generating document embeddings.
+        vector_store : VectorStore
+            An instance of the vector store configured for storing and retrieving document vectors.
+
+        Methods
+        -------
+        ingest_document(document)
+            Processes the given document by chunking it and adding the chunks to the vector store.
+        retriever() -> Callable
+            Returns a retriever configured to search for documents based on similarity score threshold.
     '''
 
-    docs = None
+    def __init__(self) -> None:
 
-    def __init__(self, document: str, text_splitter, embedding_model = "BAAI/bge-base-en-v1.5"):
-        '''
-            Args:
-                document : the file
-                text_splitter : splits the documents
-                embedding_model :  model used for embedding
-        '''
-
-        self.docs = FileLoader(document=document).load()
-
-        chunks = text_splitter.split_documents(self.docs)
-        self.chunks = filter_complex_metadata(chunks)
-        
-        self.embedding_model = embedding_model
+        self.embedding = Embedding().embedding
+        self.vector_store = VectorStore().get_vector_from_db(Chroma, self.embedding, CHROMA_PATH)
 
 
-        # Enables creating a vector representation of the documents.
-        self.vector_store = Chroma.from_documents(
-            documents=chunks,
-            embedding=HuggingFaceEmbeddings(
-                model_name=self.embedding_model,
-                encode_kwargs = {"normalize_embeddings": True},
-                )
-            )
-        
 
-        # Enables selecting a set of documents or passages that are likely to contain relevant information.
-        self.retriever = self.vector_store.as_retriever(
+    def ingest_document(self, document: str) -> None:
+
+        chunks = Chunks(document).get_chunks()
+
+        self.vector_store = VectorStore().get_vector_from_chunks(chunks, Chroma, self.embedding, CHROMA_PATH)
+    
+
+    def retriver(self):
+
+        return self.vector_store.as_retriever(
             search_type="similarity_score_threshold",
             search_kwargs={
                 "k": 3, # on récupére seulement 3 passages
                 "score_threshold": 0.5,
             },
         )
-
-
-
-

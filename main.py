@@ -1,15 +1,11 @@
 
-# Il faut lancer streamlit via la commande : streamlit run app.py
-# Pour utiliser un model particulier comme mistral : ollama pull mistral
-# puis lancer le serveur ollama via la commande ollama serve
-
 
 
 import os
 import shutil
 import streamlit as st
 from streamlit_chat import message
-from rag import ChatPDF
+from llm import Llm
 
 CHROMA_PATH = "chroma"
 EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
@@ -25,7 +21,7 @@ class Chat:
         if "messages" not in st.session_state:
             st.session_state["messages"] = []
         if "assistant" not in st.session_state:
-            st.session_state["assistant"] = ChatPDF()
+            st.session_state["assistant"] = Llm()
 
         st.session_state["ingestion_spinner"] = st.empty()
     
@@ -63,7 +59,6 @@ class Chat:
 
 
     def read_and_save_file(self):
-        st.session_state["assistant"].clear()
         st.session_state["messages"] = []
         st.session_state["user_input"] = ""
 
@@ -79,7 +74,7 @@ class Chat:
                 f.write(file_contents)
 
             with st.session_state["ingestion_spinner"], st.spinner(f"Ingesting {file.name}"):
-                st.session_state["assistant"].add_files("uploads/" + file.name)
+                st.session_state["assistant"].get_chat_chain("uploads/" + file.name)
 
 
 
