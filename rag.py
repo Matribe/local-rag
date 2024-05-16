@@ -4,7 +4,7 @@ from langchain.prompts import PromptTemplate
 from ingest import Ingest
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
-from langchain_core.runnables import ConfigurableField
+
 
 # RAG : Retrieval Augmented Generation
 

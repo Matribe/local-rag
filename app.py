@@ -11,6 +11,10 @@ import streamlit as st
 from streamlit_chat import message
 from rag import ChatPDF
 
+CHROMA_PATH = "chroma"
+EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
+DATA_PATH = "data"
+
 
 
 class Chat:
