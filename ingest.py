@@ -3,8 +3,8 @@ from embedding import Embedding
 from vector_store import VectorStore
 from chunks import Chunks
 
+from constants import CHROMA_PATH
 
-CHROMA_PATH = "chroma"
 
 class Ingest:
     '''

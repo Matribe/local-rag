@@ -1,14 +1,12 @@
+# 
+
+
 import os
 import shutil
 import streamlit as st
 from streamlit_chat import message
 from llm import Llm
-
-CHROMA_PATH = "chroma"
-EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
-DATA_PATH = "data"
-UPLOADS_PATH = "uploads/"
-
+from constants import UPLOADS_PATH
 
 
 class Chat:
@@ -77,5 +75,5 @@ class Chat:
 
 
 if __name__ == "__main__":
-    ct = Chat()
-    ct.window()
+    interface = Chat()
+    interface.window()

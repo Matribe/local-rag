@@ -1,6 +1,7 @@
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
-EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
+from constants import EMBEDDING_MODEL_NAME
+
 
 
 class Embedding:

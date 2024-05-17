@@ -4,6 +4,7 @@ from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
 
 from ingest import Ingest
+from constants import MODEL_LLM
 
 
 class Llm:
@@ -36,7 +37,7 @@ class Llm:
 
     def __init__(self) -> None:
 
-        self.model = ChatOllama(model="mistral")
+        self.model = ChatOllama(model=MODEL_LLM)
 
         self.prompt = PromptTemplate.from_template(
             """
@@ -73,6 +74,6 @@ class Llm:
         
 
     def ask(self, query: str, max_len = 1024):
-        self.model = ChatOllama(model="mistral", num_predict=max_len)
+        self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
 
         return self.chain.invoke(query)
