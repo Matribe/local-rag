@@ -1,12 +1,15 @@
 from langchain_community.vectorstores import Chroma
-from embedding import Embedding
-from vector_store import VectorStore
+from langchain_core.vectorstores import VectorStoreRetriever
+
+
+from embedding import EmbeddingManage
+from vector_store import VectorStoreManage
 from chunks import Chunks
 
 from constants import CHROMA_PATH
 
 
-class Ingest:
+class IngestManage:
     '''
         A class used to manage the ingestion and retrieval of documents into/from a vector store.
 
@@ -31,8 +34,8 @@ class Ingest:
 
     def __init__(self) -> None:
 
-        self.embedding = Embedding().embedding
-        self.vector_store = VectorStore().get_vector_from_db(Chroma, self.embedding, CHROMA_PATH)
+        self.embedding = EmbeddingManage().embedding
+        self.vector_store = VectorStoreManage().get_vector_from_db(Chroma, self.embedding, CHROMA_PATH)
 
 
 
@@ -40,15 +43,26 @@ class Ingest:
 
         chunks = Chunks(document).get_chunks()
 
-        self.vector_store = VectorStore().get_vector_from_chunks(chunks, Chroma, self.embedding, CHROMA_PATH)
+        self.vector_store = VectorStoreManage().get_vector_from_chunks(chunks, Chroma, self.embedding, CHROMA_PATH)
     
 
-    def retriver(self):
+    def retriver(self) -> VectorStoreRetriever:
 
         return self.vector_store.as_retriever(
             search_type="similarity_score_threshold",
             search_kwargs={
                 "k": 3, # on récupére seulement 3 passages
                 "score_threshold": 0.5,
+            },
+        )
+    
+    def retriver_from_doc(self, name_of_the_document : str) -> VectorStoreRetriever:
+        
+        return self.vector_store.as_retriever(
+            search_type="similarity_score_threshold",
+            search_kwargs={
+                "k": 3, # on récupére seulement 3 passages
+                "score_threshold": 0.5,
+                'filter': {'paper_title': name_of_the_document},
             },
         )

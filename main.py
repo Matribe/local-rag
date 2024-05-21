@@ -1,4 +1,8 @@
-# 
+"""
+    To run it locally,
+
+    streamlit run main.py
+"""
 
 
 import os

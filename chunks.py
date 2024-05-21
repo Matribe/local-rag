@@ -35,13 +35,13 @@ class Chunks:
     '''
 
     def __init__(self, document : str) -> None:
-        self.docs : list[Document] = FileLoader().transform_file_into_documents(document)
+        self.docs = FileLoader().transform_file_into_documents(document)
     
         self.chunks = TEXT_SPLITTER.split_documents(self.docs)
 
         # Filter out metadata types that are not supported for a vector store.
         self.filtered_chunks = filter_complex_metadata(self.chunks)
     
-    def get_chunks(self):
+    def get_chunks(self) -> list[Document]:
         return self.filtered_chunks
 

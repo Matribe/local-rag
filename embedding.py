@@ -1,10 +1,11 @@
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
+
 from constants import EMBEDDING_MODEL_NAME
 
 
 
-class Embedding:
+class EmbeddingManage:
     '''
         A class used to generate embeddings for documents using a Hugging Face model.
 

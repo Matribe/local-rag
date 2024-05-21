@@ -2,8 +2,10 @@ from langchain_community.chat_models import ChatOllama
 from langchain.prompts import PromptTemplate
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain.chains import create_retrieval_chain
 
-from ingest import Ingest
+from ingest import IngestManage
 from constants import MODEL_LLM
 
 
@@ -42,21 +44,25 @@ class Llm:
         self.prompt = PromptTemplate.from_template(
             """
             <s> [INST] You are an assistant for question-answering tasks. Use the following pieces of retrieved context 
-            to answer the question. If you don't know the answer, just say that you don't know. Use three sentences
-             maximum and keep the answer concise. [/INST] </s> 
-            [INST] Question: {question} 
+            to answer the question. If you don't know the answer, just say that you don't know. [/INST] </s> 
+            [INST] Question: {input} 
             Context: {context} 
             Answer: [/INST]
             """
         )
 
-        self.ingest = Ingest()
+        self.ingest = IngestManage()
         self.retriever = self.ingest.retriver()
 
-        self.chain = ({"context": self.retriever, "question": RunnablePassthrough()}
-            | self.prompt
-            | self.model
-            | StrOutputParser())
+        self.document_chain = create_stuff_documents_chain(self.model, self.prompt)
+        self.chain = create_retrieval_chain(self.retriever, self.document_chain)
+
+        # self.chain = (
+        #     {"context": self.retriever, "input": RunnablePassthrough()}
+        #     | self.prompt
+        #     | self.model
+        #     | StrOutputParser()
+        # )
 
 
     
@@ -67,13 +73,40 @@ class Llm:
 
         self.retriever = self.ingest.retriver()
 
-        self.chain = ({"context": self.retriever, "question": RunnablePassthrough()}
-                | self.prompt
-                | self.model
-                | StrOutputParser())
+        self.chain = create_retrieval_chain(self.retriever, self.document_chain)
+
+        # self.chain = ({"context": self.retriever, "question": RunnablePassthrough()}
+        #         | self.prompt
+        #         | self.model
+        #         | StrOutputParser())
         
 
-    def ask(self, query: str, max_len = 1024):
+    def ask(self, query: str, max_len = 1024) -> str:
         self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
 
-        return self.chain.invoke(query)
+        result = self.chain.invoke({"input": query})
+
+        sources = []
+        for doc in result["context"]:
+            sources.append(
+                {"source": doc.metadata["source"], "page_content": doc.page_content}
+            )
+        print(sources)
+
+        return result["answer"]
+
+
+
+
+
+# Ancienne version de ask, avec : self.chain = ({"context": self.retriever, "question": RunnablePassthrough()}
+                            #         | self.prompt
+                            #         | self.model
+                            #         | StrOutputParser())
+
+# def ask(self, query: str, max_len = 1024) -> str:
+#     self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
+
+#     result = self.chain.invoke(query)
+
+#     return result

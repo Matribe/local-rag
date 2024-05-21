@@ -8,3 +8,4 @@ CHROMA_PATH = "chroma"
 DATA_PATH = "data"
 
 UPLOADS_PATH = "uploads/"
+
