@@ -39,5 +39,3 @@ class VectorStoreManage:
             persist_directory = db_path,
             embedding_function = embedding,
         )
-
-
