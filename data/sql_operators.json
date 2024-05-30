@@ -1,0 +1,82 @@
+{
+    "comparison_operators": [
+        "=",
+        "<>",
+        "!=",
+        "<",
+        "<=",
+        ">",
+        ">="
+    ],
+    "logical_operators": [
+        "AND",
+        "OR",
+        "NOT"
+    ],
+    "arithmetic_operators": [
+        "+",
+        "-",
+        "*",
+        "/",
+        "%"
+    ],
+    "bitwise_operators": [
+        "&",
+        "|",
+        "^",
+        "~",
+        "<<",
+        ">>"
+    ],
+    "set_operators": [
+        "UNION",
+        "INTERSECT",
+        "EXCEPT"
+    ],
+    "string_operators": [
+        "||",
+        "LIKE",
+        "ILIKE"
+    ],
+    "other_operators": [
+        "IN",
+        "BETWEEN",
+        "IS NULL",
+        "IS NOT NULL",
+        "EXISTS",
+        "ANY",
+        "ALL"
+    ],
+    "keywords": [
+        "SELECT",
+        "FROM",
+        "WHERE",
+        "JOIN",
+        "INNER JOIN",
+        "LEFT JOIN",
+        "RIGHT JOIN",
+        "FULL JOIN",
+        "CROSS JOIN",
+        "GROUP BY",
+        "ORDER BY",
+        "HAVING",
+        "LIMIT",
+        "OFFSET",
+        "INSERT INTO",
+        "VALUES",
+        "UPDATE",
+        "SET",
+        "DELETE",
+        "CREATE TABLE",
+        "DROP TABLE",
+        "ALTER TABLE",
+        "ADD",
+        "PRIMARY KEY",
+        "FOREIGN KEY",
+        "REFERENCES",
+        "INDEX",
+        "VIEW",
+        "DISTINCT",
+        "AS"
+    ]
+}
