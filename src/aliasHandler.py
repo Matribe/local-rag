@@ -94,7 +94,7 @@ class AliasHandler:
             if not(self.has_alias(attribute)):
                 raise NameWithNoAlias
             if(attribute.split(".")[0] in alias_dictionnary):
-                transformed_attributes.append(f"{alias_dictionnary[attribute.split(".")[0]]}.{attribute.split(".")[1]}")
+                transformed_attributes.append(f"{alias_dictionnary[attribute.split('.')[0]]}.{attribute.split('.')[1]}")
         return transformed_attributes
     
     def is_transformable_to_dot_alias(self, tables:list, attributes:list, sql_formula:str):

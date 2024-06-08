@@ -20,7 +20,7 @@ sql = "SELECT t1.id, t1.value, t2.description FROM table1.t1 JOIN table2.t2 ON t
 query = Query(sql)
 
 # Afficher l'explication de la requête
-print("\n\nEXPLANATION:\n\n" + query.to_string() + "\n\n")
+# print("\n\nEXPLANATION:\n\n" + query.to_string() + "\n\n")
 
 # STEP 3: Utiliser la fonction explain de Query pour obtenir le diagramme DuckDB de la requête.
 # -------------------------------------------------------------------------------------------

@@ -57,9 +57,9 @@ class PromptManage:
     
 
     def return_list(self) -> str:
-        return "<INST> Answer with Yes or No only.</INST>"
+        return "<INST> Separate them by a comma. List as much as you can.</INST>"
     
     
     def return_yes_or_no(self) -> str:
-        return "<INST> Separate them by a comma. List as much as you can.</INST>"
+        return "<INST> Answer with Yes or No only.</INST>"
 

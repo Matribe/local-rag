@@ -76,13 +76,13 @@ class PlanText:
             Method opening a txt file as the specified file_name:str 
             to save the content:str.
         '''
-        with open(f"data/{self.file_name}", 'w') as file:
+        with open(f"data/{self.file_name}", 'w', encoding='utf-8') as file:
             file.write(self.content)
 
     def to_list(self) -> list:
         ''' 
             Method returning a list of rows from the specified file_name:str txt file.
         '''
-        with open(f"data/{self.file_name}", 'r') as file:
+        with open(f"data/{self.file_name}", 'r', encoding='utf-8') as file:
             rows = file.readlines()
         self.content_list = rows

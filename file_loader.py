@@ -5,7 +5,7 @@ from pathlib import Path
 FILE_READER = {
     ".md": UnstructuredMarkdownLoader,
     ".pdf": PyPDFLoader,
-    ".docx": Docx2txtLoader,
+    ".docx": Docx2txtLoader,                # pip install docx2txt
 }
 
 
@@ -29,5 +29,3 @@ class FileLoader:
         reader = FILE_READER[extension]
         documents = reader(file_name)
         return documents.load()
-
-
