@@ -1,7 +1,5 @@
 from langchain_community.chat_models import ChatOllama
 from langchain.prompts import PromptTemplate
-from langchain.schema.runnable import RunnablePassthrough
-from langchain.schema.output_parser import StrOutputParser
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
 
@@ -91,7 +89,7 @@ class Llm:
             sources.append(
                 {"source": doc.metadata["source"], "page_content": doc.page_content}
             )
-        print(sources)
+        # print(sources)
 
         return result["answer"]
 

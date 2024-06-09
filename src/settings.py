@@ -3,11 +3,11 @@ MODEL_LLM = "mistral"
 
 EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
 
-CHROMA_PATH = "chroma"
+CHROMA_PATH = "data/chroma"
 
 DATA_PATH = "data"
 
-UPLOADS_PATH = "uploads/"
+UPLOADS_PATH = "data/uploads/"
 
 SQL_REQUEST = """
     SELECT t1.id, t1.value, t2.description 

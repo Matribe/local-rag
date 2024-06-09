@@ -1,3 +1,9 @@
+"""
+    To run it locally,
+
+    streamlit run main.py
+"""
+
 # from chat import Chat
 from src.prompt import PromptManage
 from src.llm import Llm
@@ -22,8 +28,7 @@ class Main:
 
         # utils
         self.string_generator = StringGenerator()
-
-
+    
 
     def run(self):
         # training

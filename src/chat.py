@@ -1,10 +1,3 @@
-"""
-    To run it locally,
-
-    streamlit run main.py
-"""
-
-
 import os
 import shutil
 import streamlit as st
