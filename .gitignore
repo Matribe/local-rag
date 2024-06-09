@@ -1,6 +1,5 @@
 .env/
-uploads/
-__pycache__
-chroma/ 
+**/__pycache__
 data/
-.DS_Store
+**/.DS_Store
+**/.vscode
