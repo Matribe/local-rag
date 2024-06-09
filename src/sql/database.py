@@ -1,16 +1,16 @@
 
 import sqlite3
-
-class Sql:
-    def __init__(self, db_name):
+from src.settings import *
+class Database:
+    def __init__(self, name):
         self.conn = None
         self.cursor = None
 
-        self.db_name = db_name
-        self.connect(db_name)
+        self.name = name
+        self.connect(name)
 
     def connect(self, db):
-        self.conn = sqlite3.connect(db)
+        self.conn = sqlite3.connect(SQLITE_PATH + db)
         self.cursor = self.conn.cursor()
 
     def close(self):
@@ -32,6 +32,18 @@ class Sql:
     def create_tables(self, tables_dict):
         for table_name, columns in tables_dict.items():
             self.create_table(table_name, columns)
+        
+    def fill_table(self, table_name, columns, values):
+        self.cursor.execute(f"INSERT INTO {table_name} ({', '.join(columns)}) VALUES ({', '.join(['?']*len(columns))})", values)
+        self.conn.commit()
+
+    def fill_tables(self, json_answer):
+        for table_name, table in json_answer.items():
+            columns = table["column_names"]
+            data = table["data"]
+            for row in data:
+                values = [f"'{value}'" if isinstance(value, str) else str(value) for value in row.values()]
+                self.fill_table(table_name, columns, values)
 
 
     

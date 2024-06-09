@@ -18,4 +18,6 @@ class StringGenerator:
     def extract_llm_answer_dict(self, answer):
         json_part = answer.split("```json")[1].split("```")[0]
         return json.loads(json_part)
+    
+    
 
