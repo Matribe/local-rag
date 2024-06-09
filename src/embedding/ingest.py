@@ -2,11 +2,11 @@ from langchain_community.vectorstores import Chroma
 from langchain_core.vectorstores import VectorStoreRetriever
 
 
-from embedding import EmbeddingManage
-from vector_store import VectorStoreManage
-from chunks import Chunks
+from src.embedding.embedding import EmbeddingManage
+from src.embedding.vector_store import VectorStoreManage
+from src.embedding.chunks import Chunks
 
-from settings import CHROMA_PATH
+from src.settings import CHROMA_PATH
 
 
 class IngestManage:

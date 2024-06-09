@@ -9,6 +9,8 @@ class Main:
         # self.interface = Chat()
         # self.interface.window()
 
+        # TODO --------->  get tables from request
+
         self.tables = {
             "table1": ["id", "value"],
             "table2": ["description", "id"]
@@ -25,18 +27,19 @@ class Main:
 
     def run(self):
         # training
-        self.llm.get_chat_chain("uploads/paper.md")
+        self.llm.get_chat_chain("data/uploads/paper.md")
 
         # llm
         self.prompt = self.prompt_manager.extract_data_from_text(self.tables)
         self.answer = self.llm.ask(self.prompt)
 
         # json
-        self.bdd_dict = StringGenerator.extract_llm_answer_dict(self.answer)
+        self.bdd_dict = self.string_generator.extract_llm_answer_dict(self.answer)
+        print(self.bdd_dict)
 
         # sql
-        # --------->  database creation
-        # --------->  sql request execution
+        # TODO --------->  database creation
+        # TODO --------->  sql request execution
 
 
 

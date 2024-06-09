@@ -1,6 +1,6 @@
 from langchain_huggingface import HuggingFaceEmbeddings
 
-from settings import EMBEDDING_MODEL_NAME
+from src.settings import EMBEDDING_MODEL_NAME
 
 
 

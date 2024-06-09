@@ -1,6 +1,6 @@
 from langchain.prompts import PromptTemplate
-from utils.string import StringGenerator
-from utils.exemples import *
+from src.utils.string import StringGenerator
+from src.utils.exemples import *
 
 
 class PromptManage:
