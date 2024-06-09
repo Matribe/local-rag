@@ -1,12 +1,42 @@
+
+
+#### Installation
+
 Il faut installer ollama : https://ollama.com/
 
 
-Puis installer mistral via : ollama pull mistral
+Puis installer Mistral via : 
+
+```bash
+ollama pull mistral
+```
 
 
-Vérifier que le serveur ollama est bian lancé via : ollama serve
+Vérifier que le serveur ollama est bian lancé via : 
+
+```bash
+ollama serve
+```
+
+Pour lancer le projet :  
+
+```bash
+# streamlit run main.py
+python3 main.py
+```
 
 
-pour lancer steamlit :  streamlit run main.py
+
+#### License
+
+MIT License
+
+
+#### Authors
+
+- [Mathieu Ribeyron]()
+- [Claire Emat]()
+- [Robin Violet]()
+- [Raphaël Pietrzak]()
 
 
