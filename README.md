@@ -1,6 +1,7 @@
 
 
-#### Installation
+
+## Installation
 
 Il faut installer ollama : https://ollama.com/
 
@@ -27,12 +28,12 @@ python3 main.py
 
 
 
-#### License
+## License
 
 MIT License
 
 
-#### Authors
+## Authors
 
 - [Mathieu Ribeyron]()
 - [Claire Emat]()
