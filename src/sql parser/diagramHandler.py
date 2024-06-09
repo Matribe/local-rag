@@ -7,7 +7,7 @@ import pandas as pd
 '''
 from src.enumBoxComponent import Boxcomponent
 from src.planText import PlanText
-from src.constants import ELEMENT_TO_REPLACE
+from settings import ELEMENT_TO_REPLACE
 
 class DiagramHandler:
     '''

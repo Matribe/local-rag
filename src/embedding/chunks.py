@@ -2,7 +2,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores.utils import filter_complex_metadata
 from langchain_core.documents import Document
 
-from file_loader import FileLoader
+from llm.utils.file_loader import FileLoader
 
 
 TEXT_SPLITTER = RecursiveCharacterTextSplitter(

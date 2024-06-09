@@ -1,11 +1,10 @@
 from langchain.prompts import PromptTemplate
-
+from utils.string import StringGenerator
+from utils.exemples import *
 
 
 class PromptManage:
-
-
-    def __init__(self) -> None:
+    def __init__(self):
         self.answer_prompt = PromptTemplate.from_template(
             """
                 <s> [INST] You are an assistant for question-answering tasks. Use the following pieces of retrieved context 
@@ -33,6 +32,8 @@ class PromptManage:
             template="Source Document: {source}, Page {page}:\n{page_content}"
         )
 
+        self.string_generator = StringGenerator()
+
 
     def messages_to_prompt(self, messages) -> str:
         """
@@ -55,6 +56,14 @@ class PromptManage:
                 prompt += f"</s>\n [INST] {content} [/INST]"
         return prompt
     
+
+    def extract_data_from_text(self, tables_dict):
+        tables = self.string_generator.tables_bulletpoints(tables_dict)
+        prompt = f"""
+                        Récupérer les éléments suivants pour chaque table en json : \n\n
+                        Exemple : {EXEMPLE1}  \n   {tables}   \n
+                """
+        return prompt    
 
     def return_list(self) -> str:
         return "<INST> Answer with Yes or No only.</INST>"

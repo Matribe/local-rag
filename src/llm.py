@@ -5,8 +5,8 @@ from langchain.schema.output_parser import StrOutputParser
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
 
-from ingest import IngestManage
-from constants import MODEL_LLM
+from llm.utils.ingest import IngestManage
+from settings import MODEL_LLM
 
 
 class Llm:

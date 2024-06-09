@@ -5,7 +5,7 @@ import json
 '''
     Internals importations.
 '''
-from src.constants import *
+from settings import *
 
 class DataHandler:
     '''

@@ -1,7 +1,6 @@
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 
-
-from constants import EMBEDDING_MODEL_NAME
+from settings import EMBEDDING_MODEL_NAME
 
 
 

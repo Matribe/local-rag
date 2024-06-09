@@ -6,7 +6,7 @@ from embedding import EmbeddingManage
 from vector_store import VectorStoreManage
 from chunks import Chunks
 
-from constants import CHROMA_PATH
+from settings import CHROMA_PATH
 
 
 class IngestManage:

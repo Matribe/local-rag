@@ -6,7 +6,7 @@ import string
 '''
     Internals importations.
 '''
-from src.constants import RANDOM_SEQUENCE_LENGTH
+from settings import RANDOM_SEQUENCE_LENGTH
 
 class RandomSequenceGenerator:
     ''' 
