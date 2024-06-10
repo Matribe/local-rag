@@ -1,9 +1,9 @@
 import pandas as pd
 import duckdb 
 
-from sqlParser import SqlParser
+from src.sql.sqlParser import SqlParser
 
-from exceptions.sqlExceptions import *
+from src.exceptions.sqlExceptions import *
 
 class SqlSynthaxValidator():
 

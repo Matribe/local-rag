@@ -1,6 +1,6 @@
-from sqlSynthaxValidator import SqlSynthaxValidator
-from sqlParser import SqlParser
-from sqlAliasHandler import SqlAliasHandler
+from src.sql.sqlSynthaxValidator import SqlSynthaxValidator
+from src.sql.sqlParser import SqlParser
+from src.sql.sqlAliasHandler import SqlAliasHandler
 
 class SqlHandler():
 

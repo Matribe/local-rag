@@ -1,5 +1,5 @@
-from sqlParser import SqlParser
-from exceptions.aliasExceptions import AttributeWithoutAlias
+from src.sql.sqlParser import SqlParser
+from src.exceptions.aliasExceptions import AttributeWithoutAlias
 
 class SqlAliasHandler():
 

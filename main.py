@@ -9,6 +9,7 @@ from src.sql.database import Database
 from src.prompt import PromptManage
 from src.llm import Llm
 from src.utils.string import StringGenerator
+from src.sql.sqlHandler import SqlHandler
 from src.settings import *
 
 
@@ -17,14 +18,9 @@ class Main:
         # self.interface = Chat()
         # self.interface.window()
 
-        # TODO --------->  get tables from request
-
-        self.tables = {
-            "table1": ["id", "value"],
-            "table2": ["description", "id"]
-        }
-
-        self.sql_answer = []
+        # SQL
+        self.sql_handler = SqlHandler(SQL_REQUEST)
+        self.tables = self.sql_handler.extract_relation_schemes()
 
         # Database
         self.database = Database(DATABASE_NAME)
@@ -32,6 +28,7 @@ class Main:
         # llm
         self.llm = Llm()
         self.prompt_manager = PromptManage()
+        self.sql_answer = []
 
         # utils
         self.string_generator = StringGenerator()
