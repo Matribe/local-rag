@@ -1,9 +1,5 @@
-class NameWithNoAlias(Exception):
+class AttributeWithoutAlias(Exception):
 
     def __init__(self) -> None:
-        self.message = "The specified name (table, attribute) has no alias in its composition."
-
-class MultipleFormatAlias(Exception):
-
-    def __init__(self) -> None:
-        self.message = "The query is containing multiple formats alias, they need to be in only one format."
+        self.message = "The specified attribute isn't containing alias."
+        super().__init__(self.message)
