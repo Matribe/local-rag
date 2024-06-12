@@ -1,5 +1,8 @@
 .env/
 **/__pycache__
-data/
+
+**/data/chroma
+**/data/sqlite
+
 **/.DS_Store
 **/.vscode
