@@ -84,8 +84,8 @@ class Llm:
 
         result = self.chain.invoke({"input": query})
 
-        if not result["context"]:
-            return "Aucun document trouvé correspondant à la question."
+        # if not result["context"]:
+        #     return "Aucun document trouvé correspondant à la question."
 
         sources = []
         for doc in result["context"]:
