@@ -1,6 +1,7 @@
 
 import sqlite3
 from src.settings import *
+import os
 class Database:
     def __init__(self, name):
         self.conn = None
@@ -10,6 +11,16 @@ class Database:
         self.connect(name)
 
     def connect(self, db):
+        db_path = os.path.join(SQLITE_PATH, db)
+        db_dir = os.path.dirname(db_path)
+
+        if not os.path.exists(db_dir):
+            os.makedirs(db_dir)
+
+        if not os.path.exists(db_path):
+            with open(db_path, 'w') as f:
+                pass
+
         self.conn = sqlite3.connect(SQLITE_PATH + db)
         self.cursor = self.conn.cursor()
 
