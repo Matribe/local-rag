@@ -39,8 +39,12 @@ class Main:
         self.llm.get_chat_chain(UPLOADS_PATH + "paper.md")
 
         # llm
-        self.prompt = self.prompt_manager.extract_data_from_text(self.tables)
-        self.answer = self.llm.ask(self.prompt)
+        # self.prompt = self.prompt_manager.extract_data_from_text(self.tables)
+
+
+        self.answer = self.llm.ask(str(self.tables))
+        print(self.answer)
+        print("-------")
 
         # json
         self.bdd_dict = self.string_generator.extract_llm_answer_dict(self.answer)

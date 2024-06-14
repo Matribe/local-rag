@@ -1,11 +1,14 @@
 from langchain_community.chat_models import ChatOllama
-from langchain.prompts import PromptTemplate
 from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain.chains import create_retrieval_chain
+from langchain.chains.retrieval import create_retrieval_chain
+from langchain.prompts import PromptTemplate
+
 
 from src.embedding.ingest import IngestManage
 from src.settings import MODEL_LLM
-
+from src.prompt import PromptManage
+from src.chroma import ChromaManage
+from src.utils.exemples import EXEMPLE1
 
 class Llm:
     '''
@@ -35,19 +38,27 @@ class Llm:
             Asks a question to the model and returns the response.
     '''
 
-    def __init__(self) -> None:
+    def __init__(self, type_return = None) -> None:
+
+        self.type_return = type_return
 
         self.model = ChatOllama(model=MODEL_LLM)
 
         self.prompt = PromptTemplate.from_template(
-            """
-            <s> [INST] You are an assistant for question-answering tasks. Use the following pieces of retrieved context 
-            to answer the question. If you don't know the answer, just say that you don't know. [/INST] </s> 
-            [INST] Question: {input} 
-            Context: {context} 
-            Answer: [/INST]
-            """
-        )
+                """
+                    <s> [INST] You are an assistant for question-answering tasks. Use the following pieces of retrieved context 
+                    to answer the question. If you don't know the answer, just say that you don't know. Use three sentences
+                    maximum and keep the answer concise. [/INST] </s>
+
+                    [INST] Retrieve the items in the following format :
+                        {EXEMPLE1} 
+                    [/INST] 
+                    
+                    [INST] Question: {input} 
+                    Context: {context} 
+                    Answer: [/INST]
+                """
+            )
 
         self.ingest = IngestManage()
         self.retriever = self.ingest.retriver()
@@ -55,37 +66,28 @@ class Llm:
         self.document_chain = create_stuff_documents_chain(self.model, self.prompt)
         self.chain = create_retrieval_chain(self.retriever, self.document_chain)
 
-        # self.chain = (
-        #     {"context": self.retriever, "input": RunnablePassthrough()}
-        #     | self.prompt
-        #     | self.model
-        #     | StrOutputParser()
-        # )
-
-
     
 
     def get_chat_chain(self, document):
 
-        self.ingest.ingest_document(document)
+        sources = ChromaManage().sources()
 
-        self.retriever = self.ingest.retriver()
 
-        self.chain = create_retrieval_chain(self.retriever, self.document_chain)
+        if document not in sources:
 
-        # self.chain = ({"context": self.retriever, "question": RunnablePassthrough()}
-        #         | self.prompt
-        #         | self.model
-        #         | StrOutputParser())
+            self.ingest.ingest_document(document)
+            self.retriever = self.ingest.retriver()
+            self.chain = create_retrieval_chain(self.retriever, self.document_chain)
+
         
 
     def ask(self, query: str, max_len = 1024) -> str:
         self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
 
-        result = self.chain.invoke({"input": query})
+        result = self.chain.invoke({"input": query, "EXEMPLE1": EXEMPLE1})
 
-        # if not result["context"]:
-        #     return "Aucun document trouvé correspondant à la question."
+        if not result["context"]:
+            return "Aucun document trouvé correspondant à la question."
 
         sources = []
         for doc in result["context"]:
@@ -96,18 +98,3 @@ class Llm:
 
         return result["answer"]
 
-
-
-
-
-# Ancienne version de ask, avec : self.chain = ({"context": self.retriever, "question": RunnablePassthrough()}
-                            #         | self.prompt
-                            #         | self.model
-                            #         | StrOutputParser())
-
-# def ask(self, query: str, max_len = 1024) -> str:
-#     self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
-
-#     result = self.chain.invoke(query)
-
-#     return result
