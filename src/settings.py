@@ -12,7 +12,7 @@ SQLITE_PATH = "data/sqlite/"
 DATABASE_NAME = "database.db"
 
 SQL_REQUEST = """
-    SELECT m.model, m.number_of_parametrs, d.document
+    SELECT m.model, m.number_of_parametrs, d.title
     FROM Document d, Model m
 """
 
