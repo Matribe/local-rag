@@ -44,7 +44,7 @@ class Llm:
 
         self.model = ChatOllama(model=MODEL_LLM)
 
-        self.prompt = PromptManage(type_return="Json").answer_prompt
+        self.prompt = PromptManage().answer_prompt
 
         self.ingest = IngestManage()
         self.retriever = self.ingest.retriver()
@@ -68,17 +68,13 @@ class Llm:
 
         
 
-    def ask(self, query, max_len = 1024) -> str:
+    def ask(self, query: str, max_len = 1024) -> str:
         self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
 
-        tables = StringGenerator().tables_bulletpoints(query)
-
-        input = "give me the name of the models used with their number of parameters."
-
-        result = self.chain.invoke({"input": input, "tables": tables, "type_input": JSON_EXEMPLE})
+        result = self.chain.invoke({"input": query})
 
         print("\n------- Prompt : -------")
-        print(self.prompt.format(input = input, context = result["context"], tables = tables, type_input = JSON_EXEMPLE))
+        print(self.prompt.format(input = query, context = result["context"]))
 
         if not result["context"]:
             return "Aucun document trouvé correspondant à la question.", ""

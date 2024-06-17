@@ -12,8 +12,8 @@ SQLITE_PATH = "data/sqlite/"
 DATABASE_NAME = "database.db"
 
 SQL_REQUEST = """
-    SELECT m.model, m.number_of_parameters
-    FROM Large_Langage_Model m
+    SELECT llm.name, llm.tokens
+    FROM Large_Langage_Model llm
 """
 
 

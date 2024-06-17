@@ -28,37 +28,25 @@ class PromptManage:
     '''
 
 
-    def __init__(self, type_return = None):
+    def __init__(self):
 
-        if not type_return:
-            self.answer_prompt = PromptTemplate.from_template(
-                """
-                    <s> [INST] You are an assistant for question-answering tasks. Use the following pieces of retrieved context 
-                    to answer the question. If you don't know the answer, just say that you don't know.[/INST] </s>
-                    
-                    [INST] Question: {input} 
-                    Context: {context} 
-                    Answer: [/INST]
-                """
-            )
-        else:
-            self.answer_prompt = PromptTemplate.from_template(
-                """
-                    <s> [INST] You are an assistant for question-answering tasks. Use the following pieces of retrieved context 
-                    to answer the question. If you don't know the answer, just say that you don't know. Use three sentences
-                    maximum and keep the answer concise. [/INST] </s>
+        self.answer_prompt = PromptTemplate.from_template(
+            """
+                <s> [INST] You are an assistant for question-answering tasks. Use the following pieces of retrieved context 
+                to answer the question. If you don't know the answer, just say that you don't know.
+                [/INST] </s>
 
-                    [INST]
-                        {type_input}
-                        The response should be in JSON format with table and column :
-                        {tables}
-                    [/INST]
+                [INST]
+                    The answer must be a list. Separate answer by a comma. The answer must be in [ ].
+                    Example :
+                    Give me some name of Country ? ['Paris', 'Lyon', 'New York', 'Dublin']
+                [/INST]
 
-                    [INST] Question : {input}
-                    Context: {context} 
-                    Answer: [/INST]
-                """
-            )
+                [INST] Question : {input}
+                Context: {context} 
+                Answer: [/INST]
+            """
+        )
 
     def return_list(self) -> str:
         return "<INST> Answer with Yes or No only.</INST>"

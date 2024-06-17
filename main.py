@@ -5,6 +5,8 @@
 """
 
 # from chat import Chat
+import re
+
 from src.sql.database import Database
 from src.prompt import PromptManage
 from src.llm import Llm
@@ -43,29 +45,51 @@ class Main:
         print("\n------- La requête : -------")
         print(SQL_REQUEST)
 
-        print("\n------- Le format du json attendu : -------")
-        print(self.tables)
+        json_final = {}
 
-        # llm
-        self.answer, sources = self.llm.ask(self.tables)
-        print("\n------- Réponse du LLM -------")
-        print(self.answer)
-        print("\n------- Sources utilisées -------")
-        print(sources)
+        for table, columns in self.tables.items():
+            json_final[table] = {"column_names": columns}
 
+            for column in columns:
+                print(f"\n------- pour {column} de {table} -------")
+                # llm
+                self.answer, sources = self.llm.ask(f"Give me some {column} of {table}.")
+                print("\n------- Réponse du LLM -------")
+                print(self.answer)
+                print("\n------- Sources utilisées -------")
+                print(sources)
+
+                try:
+                    resultats = re.search(r'\[(.*?)\]', self.answer).group(1).split(",")
+                except:
+                    resultats = []
+
+                # try:
+                #     resultats = re.search(r'\[(.*?)\]', self.answer).group(1)
+                # except:
+                #     resultats = ""
+
+                # resultat_final = []
+                # for resultat in resultats.split(","):
+                #     reponse = self.llm.model.invoke(f"""
+                #         <s> [INST] You are an assistant for question-answering tasks. Use the following pieces of retrieved context 
+                #         to answer the question. If you don't know the answer, just say that you don't know.
+                #         [/INST] </s>
+                #         <INST>
+                #             Answer with Yes or No only. Don't make a sentence, just respond with one word.
+                #         </INST>\n
+                #         <INST> Question : Is {resultat} a {column} of {table} ?
+                #         Context : {sources}
+                #         Answer:</INST>""")
+                #     if "Yes" in reponse.content:
+                #         resultat_final.append(resultat)
+                # print("\n------- Résultat final -------")
+                # print(resultat_final)
+
+                json_final[table][column] = resultats
         
-        # json
-        self.bdd_dict = self.string_generator.extract_llm_answer_dict(self.answer)
-        print("\n------- Mise sous format dict de la réponse -------")
-        print(self.bdd_dict)
-        
-
-        # sql
-        self.database.process_json(self.bdd_dict)
-        self.sql_answer = self.database.query(SQL_REQUEST, [])
-        print("\n------- Réponse de la base de donnée -------")
-        print(self.sql_answer)
-
+        print("\n------- le Json obtenu -------")
+        print(json_final)
 
 
 
