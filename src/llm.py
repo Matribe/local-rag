@@ -5,6 +5,7 @@ from langchain.chains import create_retrieval_chain
 
 from src.embedding.ingest import IngestManage
 from src.settings import MODEL_LLM
+from src.embedding.chroma import ChromaManage
 
 
 class Llm:
@@ -55,59 +56,38 @@ class Llm:
         self.document_chain = create_stuff_documents_chain(self.model, self.prompt)
         self.chain = create_retrieval_chain(self.retriever, self.document_chain)
 
-        # self.chain = (
-        #     {"context": self.retriever, "input": RunnablePassthrough()}
-        #     | self.prompt
-        #     | self.model
-        #     | StrOutputParser()
-        # )
-
-
     
 
     def get_chat_chain(self, document):
 
-        self.ingest.ingest_document(document)
-
-        self.retriever = self.ingest.retriver()
-
-        self.chain = create_retrieval_chain(self.retriever, self.document_chain)
-
-        # self.chain = ({"context": self.retriever, "question": RunnablePassthrough()}
-        #         | self.prompt
-        #         | self.model
-        #         | StrOutputParser())
+        sources = ChromaManage().sources()
         
 
-    def ask(self, query: str, max_len = 1024) -> str:
+        if document not in sources:
+
+            self.ingest.ingest_document(document)
+            self.retriever = self.ingest.retriver()
+            self.chain = create_retrieval_chain(self.retriever, self.document_chain)
+        
+
+    def ask(self, query: str, max_len = 1024):
         self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
 
         result = self.chain.invoke({"input": query})
 
-        # if not result["context"]:
-        #     return "Aucun document trouvé correspondant à la question."
+        print("\n------- Le prompt : -------")
+        print(self.prompt.format(input = query, context = result["context"]))
+
+
+        if not result["context"]:
+            return "Aucun document trouvé correspondant à la question.", ""
 
         sources = []
         for doc in result["context"]:
             sources.append(
                 {"source": doc.metadata["source"], "page_content": doc.page_content}
             )
-        # print(sources)
 
-        return result["answer"]
-
+        return result["answer"], sources
 
 
-
-
-# Ancienne version de ask, avec : self.chain = ({"context": self.retriever, "question": RunnablePassthrough()}
-                            #         | self.prompt
-                            #         | self.model
-                            #         | StrOutputParser())
-
-# def ask(self, query: str, max_len = 1024) -> str:
-#     self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
-
-#     result = self.chain.invoke(query)
-
-#     return result
