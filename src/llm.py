@@ -1,14 +1,13 @@
 from langchain_community.chat_models import ChatOllama
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
-from langchain.prompts import PromptTemplate
 
 
 from src.embedding.ingest import IngestManage
 from src.settings import MODEL_LLM
 from src.prompt import PromptManage
 from src.embedding.chroma import ChromaManage
-from src.utils.exemples import EXEMPLE1
+from src.utils.exemples import JSON_EXEMPLE
 
 class Llm:
     '''
@@ -70,7 +69,10 @@ class Llm:
     def ask(self, query: str, max_len = 1024) -> str:
         self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
 
-        result = self.chain.invoke({"input": query, "type_return": "Json"})
+        result = self.chain.invoke({"input": query, "type_return": JSON_EXEMPLE})
+
+        print("\n------- Prompt : -------")
+        print(self.prompt.format(input=query, type_return=JSON_EXEMPLE, context = result["context"]))
 
         if not result["context"]:
             return "Aucun document trouvé correspondant à la question."

@@ -35,8 +35,11 @@ class Main:
     
 
     def run(self):
-        # training
+        # Embeddings
         self.llm.get_chat_chain(UPLOADS_PATH + "paper.md")
+        self.llm.get_chat_chain(UPLOADS_PATH + "ESCALADE_ReglementUNSS.docx")
+        self.llm.get_chat_chain(UPLOADS_PATH + "Lost in the middle.pdf")
+        self.llm.get_chat_chain(UPLOADS_PATH + "QueryingLLMwithSQL.pdf")
         print("\n------- Question posé au LLM -------")
         print(str(self.tables))
 
@@ -47,7 +50,6 @@ class Main:
         print("\n------- Sources utilisées -------")
         print(sources)
         
-
         # json
         self.bdd_dict = self.string_generator.extract_llm_answer_dict(self.answer)
         print("\n------- Mise sous format dict de la réponse -------")
@@ -55,9 +57,9 @@ class Main:
         
 
         # sql
-        self.database.process_json(self.bdd_dict)
+        self.database.create_tables(self.tables)
+        self.database.fill_tables(self.bdd_dict)
         self.sql_answer = self.database.query(SQL_REQUEST, [])
-        print("\n------- Réponse à la question -------")
         print(self.sql_answer)
 
 

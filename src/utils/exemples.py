@@ -1,7 +1,7 @@
 
 
-EXEMPLE1 = """
-```json
+JSON_EXEMPLE = """
+Can you provide the answer in the form of Json as this example :
 {"[TABLE NAME]" :
         {
             "column_names" : ["[VALUE 1]", "[VALUE 2]", "[VALUE 3]"],
@@ -12,7 +12,7 @@ EXEMPLE1 = """
             ]
         },
     "[TABLE NAME2]" : ...
-}``` :
+}
 """
 
 

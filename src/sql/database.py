@@ -31,41 +31,30 @@ class Database:
         self.cursor.execute(query, params)
         return self.cursor.fetchall()
 
-    def execute(self, query, params=None):
-        if not params:
-            self.cursor.execute(query)
-            self.conn.commit()
-        else:
-            self.cursor.execute(query, params)
-            self.conn.commit()
-
+    def execute(self, query, params):
+        self.cursor.execute(query, params)
+        self.conn.commit()
 
     def create_table(self, table_name, columns):
-        self.execute(f"DROP TABLE IF EXISTS {table_name}")
-        columns_sql = ", ".join([f"{col} TEXT" for col in columns])
-        create_table_sql = f"CREATE TABLE IF NOT EXISTS {table_name} ({columns_sql})"
-        self.execute(create_table_sql)
-
+        self.cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
+        self.cursor.execute(f"CREATE TABLE {table_name} ({', '.join(columns)})")
+        self.conn.commit()
+    
+    def create_tables(self, tables_dict):
+        for table_name, columns in tables_dict.items():
+            self.create_table(table_name, columns)
         
-        
-    def insert_data(self, table_name, columns, data):
-        placeholders = ", ".join(["?" for _ in columns])
-        insert_sql = f"INSERT INTO {table_name} ({', '.join(columns)}) VALUES ({placeholders})"
-        self.execute(insert_sql, [str(data.get(col, '')) for col in columns])
+    def fill_table(self, table_name, columns, values):
+        self.cursor.execute(f"INSERT INTO {table_name} ({', '.join(columns)}) VALUES ({', '.join(['?']*len(columns))})", values)
+        self.conn.commit()
 
-
-    def process_json(self, json_data, parent_table_name=None):
-        for table_name, records in json_data.items():
-            if isinstance(records, list):
-                columns = set()
-                for record in records:
-                    columns.update(record.keys())
-                columns = list(columns)
-                self.create_table(table_name, columns)
-                for record in records:
-                    self.insert_data(table_name, columns, record)
-            elif isinstance(records, dict):
-                self.process_json(records, table_name)
+    def fill_tables(self, json_answer):
+        for table_name, table in json_answer.items():
+            columns = table["column_names"]
+            data = table["data"]
+            for row in data:
+                values = [f"'{value}'" if isinstance(value, str) else str(value) for value in row.values()]
+                self.fill_table(table_name, columns, values)
 
 
     

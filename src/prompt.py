@@ -26,7 +26,7 @@ class PromptManage:
                     maximum and keep the answer concise. [/INST] </s>
                     
                     [INST] 
-                       Can you provide the answer in the form of {type_return} ?
+                       {type_return}
                     [/INST] 
 
                     [INST] Question: {input}
