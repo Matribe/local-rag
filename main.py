@@ -37,23 +37,27 @@ class Main:
     def run(self):
         # training
         self.llm.get_chat_chain(UPLOADS_PATH + "paper.md")
+        print("\n------- Question posé au LLM -------")
+        print(str(self.tables))
 
         # llm
-        # self.prompt = self.prompt_manager.extract_data_from_text(self.tables)
-
-
-        self.answer = self.llm.ask(str(self.tables))
+        self.answer, sources = self.llm.ask(str(self.tables))
+        print("\n------- Réponse du LLM -------")
         print(self.answer)
-        print("-------")
+        print("\n------- Sources utilisées -------")
+        print(sources)
+        
 
         # json
         self.bdd_dict = self.string_generator.extract_llm_answer_dict(self.answer)
+        print("\n------- Mise sous format dict de la réponse -------")
         print(self.bdd_dict)
+        
 
         # sql
-        self.database.create_tables(self.tables)
-        self.database.fill_tables(self.bdd_dict)
+        self.database.process_json(self.bdd_dict)
         self.sql_answer = self.database.query(SQL_REQUEST, [])
+        print("\n------- Réponse à la question -------")
         print(self.sql_answer)
 
 

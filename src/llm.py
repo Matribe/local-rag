@@ -7,7 +7,7 @@ from langchain.prompts import PromptTemplate
 from src.embedding.ingest import IngestManage
 from src.settings import MODEL_LLM
 from src.prompt import PromptManage
-from src.chroma import ChromaManage
+from src.embedding.chroma import ChromaManage
 from src.utils.exemples import EXEMPLE1
 
 class Llm:
@@ -44,21 +44,7 @@ class Llm:
 
         self.model = ChatOllama(model=MODEL_LLM)
 
-        self.prompt = PromptTemplate.from_template(
-                """
-                    <s> [INST] You are an assistant for question-answering tasks. Use the following pieces of retrieved context 
-                    to answer the question. If you don't know the answer, just say that you don't know. Use three sentences
-                    maximum and keep the answer concise. [/INST] </s>
-
-                    [INST] Retrieve the items in the following format :
-                        {EXEMPLE1} 
-                    [/INST] 
-                    
-                    [INST] Question: {input} 
-                    Context: {context} 
-                    Answer: [/INST]
-                """
-            )
+        self.prompt = PromptManage(type_return="Json").answer_prompt
 
         self.ingest = IngestManage()
         self.retriever = self.ingest.retriver()
@@ -84,7 +70,7 @@ class Llm:
     def ask(self, query: str, max_len = 1024) -> str:
         self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
 
-        result = self.chain.invoke({"input": query, "EXEMPLE1": EXEMPLE1})
+        result = self.chain.invoke({"input": query, "type_return": "Json"})
 
         if not result["context"]:
             return "Aucun document trouvé correspondant à la question."
@@ -96,5 +82,5 @@ class Llm:
             )
         # print(sources)
 
-        return result["answer"]
+        return result["answer"], sources
 
