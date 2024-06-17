@@ -20,7 +20,6 @@ class Main:
 
         # SQL
         self.sql_handler = SqlHandler(SQL_REQUEST)
-        self.tables = self.sql_handler.extract_relation_schemes()
 
         # Database
         self.database = Database(DATABASE_NAME)
@@ -35,16 +34,17 @@ class Main:
     
 
     def run(self):
-        # training
+
+        self.tables = self.sql_handler.extract_relation_schemes()
         self.llm.get_chat_chain(UPLOADS_PATH + "paper.md")
 
         # llm
         self.prompt = self.prompt_manager.extract_data_from_text(self.tables)
+        print(self.prompt)
         self.answer = self.llm.ask(self.prompt)
 
         # json
         self.bdd_dict = self.string_generator.extract_llm_answer_dict(self.answer)
-        print(self.bdd_dict)
 
         # sql
         self.database.create_tables(self.tables)

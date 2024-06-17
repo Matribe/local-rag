@@ -1,5 +1,5 @@
 
-
+from src.exceptions import llmException
 import json
 
 
@@ -17,7 +17,13 @@ class StringGenerator:
     
     def extract_llm_answer_dict(self, answer):
         json_part = answer.split("```json")[1].split("```")[0]
+        if json_part == "":
+            raise llmException
         return json.loads(json_part)
     
+
+
+
+
     
 
