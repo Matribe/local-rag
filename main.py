@@ -37,19 +37,35 @@ class Main:
 
         self.tables = self.sql_handler.extract_relation_schemes()
         self.llm.get_chat_chain(UPLOADS_PATH + "paper.md")
+        self.llm.get_chat_chain(UPLOADS_PATH + "ESCALADE_ReglementUNSS.docx")
+        self.llm.get_chat_chain(UPLOADS_PATH + "Lost in the middle.pdf")
+        self.llm.get_chat_chain(UPLOADS_PATH + "QueryingLLMwithSQL.pdf")
+        print("\n------- La requête : -------")
+        print(SQL_REQUEST)
+
+        print("\n------- Le format du json attendu : -------")
+        print(self.tables)
+
 
         # llm
         self.prompt = self.prompt_manager.extract_data_from_text(self.tables)
-        print(self.prompt)
-        self.answer = self.llm.ask(self.prompt)
+        self.answer, sources = self.llm.ask(self.prompt)
+        print("\n------- Réponse du LLM -------")
+        print(self.answer)
+        print("\n------- Sources utilisées -------")
+        print(sources)
 
         # json
         self.bdd_dict = self.string_generator.extract_llm_answer_dict(self.answer)
+        print(self.bdd_dict)
+        print("\n------- Mise sous format dict de la réponse -------")
+        print(self.bdd_dict)
 
         # sql
         self.database.create_tables(self.tables)
         self.database.fill_tables(self.bdd_dict)
         self.sql_answer = self.database.query(SQL_REQUEST, [])
+        print("\n------- Réponse de la base de donnée -------")
         print(self.sql_answer)
 
 
