@@ -27,9 +27,6 @@ class Database:
     def close(self):
         self.conn.close()
 
-    def query(self, query, params):
-        self.cursor.execute(query, params)
-        return self.cursor.fetchall()
 
     def execute(self, query, params=None):
         if not params:
@@ -41,6 +38,7 @@ class Database:
 
 
     def create_table(self, table_name, columns):
+        self.execute(f"DROP TABLE IF EXISTS {table_name}")
         columns_sql = ", ".join([f"{col} TEXT" for col in columns])
         create_table_sql = f"CREATE TABLE IF NOT EXISTS {table_name} ({columns_sql})"
         self.execute(create_table_sql)
