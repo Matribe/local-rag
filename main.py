@@ -40,15 +40,19 @@ class Main:
         self.llm.get_chat_chain(UPLOADS_PATH + "ESCALADE_ReglementUNSS.docx")
         self.llm.get_chat_chain(UPLOADS_PATH + "Lost in the middle.pdf")
         self.llm.get_chat_chain(UPLOADS_PATH + "QueryingLLMwithSQL.pdf")
-        print("\n------- Question posé au LLM -------")
-        print(str(self.tables))
+        print("\n------- La requête : -------")
+        print(SQL_REQUEST)
+
+        print("\n------- Le format du json attendu : -------")
+        print(self.tables)
 
         # llm
-        self.answer, sources = self.llm.ask(str(self.tables))
+        self.answer, sources = self.llm.ask(self.tables)
         print("\n------- Réponse du LLM -------")
         print(self.answer)
         print("\n------- Sources utilisées -------")
         print(sources)
+
         
         # json
         self.bdd_dict = self.string_generator.extract_llm_answer_dict(self.answer)
@@ -57,9 +61,9 @@ class Main:
         
 
         # sql
-        self.database.create_tables(self.tables)
-        self.database.fill_tables(self.bdd_dict)
+        self.database.process_json(self.bdd_dict)
         self.sql_answer = self.database.query(SQL_REQUEST, [])
+        print("\n------- Réponse de la base de donnée -------")
         print(self.sql_answer)
 
 

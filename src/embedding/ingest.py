@@ -51,7 +51,7 @@ class IngestManage:
         return self.vector_store.as_retriever(
             search_type="similarity_score_threshold",
             search_kwargs={
-                "k": 3, # on récupére seulement 3 passages
+                "k": 5, # on récupére seulement 3 passages
                 "score_threshold": 0.5,
             },
         )

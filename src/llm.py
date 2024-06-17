@@ -8,6 +8,7 @@ from src.settings import MODEL_LLM
 from src.prompt import PromptManage
 from src.embedding.chroma import ChromaManage
 from src.utils.exemples import JSON_EXEMPLE
+from src.utils.string import StringGenerator
 
 class Llm:
     '''
@@ -56,6 +57,7 @@ class Llm:
     def get_chat_chain(self, document):
 
         sources = ChromaManage().sources()
+        
 
 
         if document not in sources:
@@ -66,21 +68,25 @@ class Llm:
 
         
 
-    def ask(self, query: str, max_len = 1024) -> str:
+    def ask(self, query, max_len = 1024) -> str:
         self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
 
-        result = self.chain.invoke({"input": query, "type_return": JSON_EXEMPLE})
+        tables = StringGenerator().tables_bulletpoints(query)
+
+        input = "give me the name of the models used with their number of parameters."
+
+        result = self.chain.invoke({"input": input, "tables": tables, "type_input": JSON_EXEMPLE})
 
         print("\n------- Prompt : -------")
-        print(self.prompt.format(input=query, type_return=JSON_EXEMPLE, context = result["context"]))
+        print(self.prompt.format(input = input, context = result["context"], tables = tables, type_input = JSON_EXEMPLE))
 
         if not result["context"]:
-            return "Aucun document trouvé correspondant à la question."
+            return "Aucun document trouvé correspondant à la question.", ""
 
         sources = []
         for doc in result["context"]:
             sources.append(
-                {"source": doc.metadata["source"], "page_content": doc.page_content}
+                {"source": doc.metadata["source"]}
             )
         # print(sources)
 

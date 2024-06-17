@@ -10,7 +10,7 @@ class StringGenerator:
     def tables_bulletpoints(self, tables_dict):
         string = ""
         for table, columns in tables_dict.items():
-            string += f"Table {table} :\n"
+            string += f"{table} :\n"
             for column in columns:
                 string += f" - {column}\n"
         return string
