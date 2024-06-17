@@ -27,6 +27,9 @@ class Database:
     def close(self):
         self.conn.close()
 
+    def query(self, query, params):
+        self.cursor.execute(query, params)
+        return self.cursor.fetchall()
 
     def execute(self, query, params=None):
         if not params:
