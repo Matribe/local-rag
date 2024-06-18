@@ -1,25 +1,14 @@
-"""
-    To run it locally,
-
-    streamlit run main.py
-"""
-
-# from chat import Chat
-import re
-
 from src.sql.database import Database
 from src.prompt import PromptManage
 from src.llm import Llm
-from src.utils.string import StringGenerator
+from src.utils.string import StringAnalyze
 from src.sql.sqlHandler import SqlHandler
 from src.settings import *
 
 
+
 class Main:
     def __init__(self):
-        # self.interface = Chat()
-        # self.interface.window()
-
         # SQL
         self.sql_handler = SqlHandler(SQL_REQUEST)
         self.tables = self.sql_handler.extract_relation_schemes()
@@ -33,7 +22,7 @@ class Main:
         self.sql_answer = []
 
         # utils
-        self.string_generator = StringGenerator()
+        self.string_analyze = StringAnalyze()
     
 
     def run(self):
@@ -45,52 +34,43 @@ class Main:
         print("\n------- La requête : -------")
         print(SQL_REQUEST)
 
-        json_final = {}
 
+        # Llm
+        self.answer = {}
         for table, columns in self.tables.items():
-            json_final[table] = {"column_names": columns}
+            self.answer[table] = {"column_names": columns}
+            data_cache = []
+            for _ in range(NUMBER_OF_GENERATIONS):
+                table_name = str(table).replace("_", " ")
 
-            for column in columns:
-                print(f"\n------- pour {column} de {table} -------")
-                # llm
-                self.answer, sources = self.llm.ask(f"Give me some {column} of {table}.")
-                print("\n------- Réponse du LLM -------")
-                print(self.answer)
-                print("\n------- Sources utilisées -------")
-                print(sources)
+                answer,_ = self.llm.ask(f"{tuple(columns)} for {table_name}", f"Give me some for {tuple(columns)}")
 
-                try:
-                    resultats = re.search(r'\[(.*?)\]', self.answer).group(1).split(",")
-                except:
-                    resultats = []
+                answer = self.string_analyze.treat_results(answer)
+                answer = self.string_analyze.verif_size_columns(len(columns), answer)
+                data_cache.extend(answer)
 
-                # try:
-                #     resultats = re.search(r'\[(.*?)\]', self.answer).group(1)
-                # except:
-                #     resultats = ""
+                print(answer)
 
-                # resultat_final = []
-                # for resultat in resultats.split(","):
-                #     reponse = self.llm.model.invoke(f"""
-                #         <s> [INST] You are an assistant for question-answering tasks. Use the following pieces of retrieved context 
-                #         to answer the question. If you don't know the answer, just say that you don't know.
-                #         [/INST] </s>
-                #         <INST>
-                #             Answer with Yes or No only. Don't make a sentence, just respond with one word.
-                #         </INST>\n
-                #         <INST> Question : Is {resultat} a {column} of {table} ?
-                #         Context : {sources}
-                #         Answer:</INST>""")
-                #     if "Yes" in reponse.content:
-                #         resultat_final.append(resultat)
-                # print("\n------- Résultat final -------")
-                # print(resultat_final)
 
-                json_final[table][column] = resultats
+            data_cache = self.string_analyze.get_most_frequent_tuples(data_cache, 3)
+            
+
+            print(data_cache)
+
+            self.answer[table]["data"] = data_cache 
+
         
-        print("\n------- le Json obtenu -------")
-        print(json_final)
+        print("\n------- Réponse du Llm -------")
+        print(self.answer)
 
+        self.table_with_type = self.string_analyze.type_of_attributs(self.tables, self.answer)
+
+        # Sql
+        self.database.create_tables(self.table_with_type)
+        self.database.fill_tables(self.answer)
+        self.sql_answer = self.database.query(SQL_REQUEST, [])
+        print("\n------- Réponse de la base de donnée -------")
+        print(self.sql_answer)
 
 
 if __name__ == "__main__":

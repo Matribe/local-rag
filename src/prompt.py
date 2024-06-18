@@ -1,6 +1,4 @@
 from langchain.prompts import PromptTemplate
-from src.utils.string import StringGenerator
-from src.utils.exemples import *
 
 
 class PromptManage:
@@ -37,21 +35,21 @@ class PromptManage:
                 [/INST] </s>
 
                 [INST]
-                    The answer must be a list. Separate answer by a comma. The answer must be in [ ].
+                    The answer must be a list of tuple. Separate answer by a comma.
                     Example :
-                    Give me some name of Country ? ['Paris', 'Lyon', 'New York', 'Dublin']
+                    {example}
                 [/INST]
 
-                [INST] Question : {input}
+                [INST] Question : Give me some for the tuple {input}
                 Context: {context} 
                 Answer: [/INST]
             """
         )
 
     def return_list(self) -> str:
-        return "<INST> Answer with Yes or No only.</INST>"
+        return "<INST> Separate them by a comma. List as much as you can.</INST>"
     
     
     def return_yes_or_no(self) -> str:
-        return "<INST> Separate them by a comma. List as much as you can.</INST>"
+        return "<INST> Answer with Yes or No only.</INST>"
 

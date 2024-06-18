@@ -12,8 +12,8 @@ SQLITE_PATH = "data/sqlite/"
 DATABASE_NAME = "database.db"
 
 SQL_REQUEST = """
-    SELECT llm.name, llm.tokens
+    SELECT llm.model, llm.number_of_parameters
     FROM Large_Langage_Model llm
 """
 
-
+NUMBER_OF_GENERATIONS = 20

@@ -7,8 +7,7 @@ from src.embedding.ingest import IngestManage
 from src.settings import MODEL_LLM
 from src.prompt import PromptManage
 from src.embedding.chroma import ChromaManage
-from src.utils.exemples import JSON_EXEMPLE
-from src.utils.string import StringGenerator
+
 
 class Llm:
     '''
@@ -58,8 +57,6 @@ class Llm:
 
         sources = ChromaManage().sources()
         
-
-
         if document not in sources:
 
             self.ingest.ingest_document(document)
@@ -68,13 +65,10 @@ class Llm:
 
         
 
-    def ask(self, query: str, max_len = 1024) -> str:
+    def ask(self, query: str, example: str, max_len = 1024):
         self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
 
-        result = self.chain.invoke({"input": query})
-
-        print("\n------- Prompt : -------")
-        print(self.prompt.format(input = query, context = result["context"]))
+        result = self.chain.invoke({"input": query, "example": example})
 
         if not result["context"]:
             return "Aucun document trouvé correspondant à la question.", ""
@@ -84,7 +78,6 @@ class Llm:
             sources.append(
                 {"source": doc.metadata["source"]}
             )
-        # print(sources)
 
         return result["answer"], sources
 

@@ -2,9 +2,13 @@ import os
 import shutil
 import streamlit as st
 from streamlit_chat import message
-from llm import Llm
-from settings import UPLOADS_PATH
+from src.llm import Llm
+from src.settings import UPLOADS_PATH
+"""
+    To run it locally,
 
+    streamlit run chat.py
+"""
 
 class Chat:
     st.set_page_config(page_title="Chat with your documents")
