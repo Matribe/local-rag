@@ -36,7 +36,7 @@ MIT License
 ## Authors
 
 - [Mathieu Ribeyron]()
-- [Claire Emat]()
+- [Claire Mathieu]()
 - [Robin Violet]()
 - [Raphaël Pietrzak]()
 
