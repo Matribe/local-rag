@@ -66,15 +66,14 @@ class StringAnalyze:
             return False
     
     def type_of_attributs(self, tables, answer):
-        if not answer[table]["data"]:
-            return []
         table_with_type = {}
         for table, columns in tables.items():
             table_with_type[table] = {"column_names": columns}
             table_with_type[table]["type"] = ["TEXT" for _ in columns]
-            attributs = answer[table]["data"][0]
-            for i in range(len(columns)):
-                attribut = attributs[i]
-                if self.is_integer(attribut):
-                    table_with_type[table]["type"][i] = "INTEGER"
+            if answer[table]["data"]:
+                attributs = answer[table]["data"][0]
+                for i in range(len(columns)):
+                    attribut = attributs[i]
+                    if self.is_integer(attribut):
+                        table_with_type[table]["type"][i] = "INTEGER"
         return table_with_type
