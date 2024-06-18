@@ -27,6 +27,15 @@ class SqlHandler():
 
         relation_schemes = {}
 
+        if len(tables) == 1 :
+
+            attributes = self.parser.find_attributes()
+
+            table = tables[0]
+            relation_schemes[table] = attributes
+
+            return relation_schemes
+
         for table in tables:
 
             attributes: list[str] = self.extract_attributes_for_specific_table(table)
