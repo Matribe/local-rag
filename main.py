@@ -27,10 +27,9 @@ class Main:
 
     def run(self):
         # Embeddings
-        self.llm.get_chat_chain(UPLOADS_PATH + "paper.md")
-        self.llm.get_chat_chain(UPLOADS_PATH + "ESCALADE_ReglementUNSS.docx")
-        self.llm.get_chat_chain(UPLOADS_PATH + "Lost in the middle.pdf")
-        self.llm.get_chat_chain(UPLOADS_PATH + "QueryingLLMwithSQL.pdf")
+        self.llm.get_chat_chain(UPLOADS_PATH + "Overview_of_LLMs.md")
+        self.llm.get_chat_chain(UPLOADS_PATH + "Rock_Climbing_Overview.docx")
+        self.llm.get_chat_chain(UPLOADS_PATH + "The_Great_Gatsby.pdf")
         print("\n------- La requête : -------")
         print(SQL_REQUEST)
 
@@ -46,7 +45,7 @@ class Main:
                 answer,_ = self.llm.ask(f"{tuple(columns)} for {table_name}", f"Give me some for {tuple(columns)}")
 
                 answer = self.string_analyze.treat_results(answer)
-                # answer = self.string_analyze.verif_size_columns(len(columns), answer)
+                answer = self.string_analyze.verif_size_columns(len(columns), answer)
                 data_cache.extend(answer)
 
                 print(answer)
@@ -68,7 +67,7 @@ class Main:
         # Sql
         self.database.create_tables(self.table_with_type)
         self.database.fill_tables(self.answer)
-        self.sql_answer = self.database.query(SQL_REQUEST, [])
+        self.sql_answer = self.database.query(SQL_REQUEST)
         print("\n------- Réponse de la base de donnée -------")
         print(self.sql_answer)
 

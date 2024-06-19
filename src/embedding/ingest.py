@@ -51,7 +51,7 @@ class IngestManage:
         return self.vector_store.as_retriever(
             search_type="similarity_score_threshold",
             search_kwargs={
-                "k": 5, # on récupére seulement 3 passages
+                "k": 5, # on récupére seulement 5 passages
                 "score_threshold": 0.5,
             },
         )
@@ -61,7 +61,7 @@ class IngestManage:
         return self.vector_store.as_retriever(
             search_type="similarity_score_threshold",
             search_kwargs={
-                "k": 3, # on récupére seulement 3 passages
+                "k": 5, # on récupére seulement 5 passages
                 "score_threshold": 0.5,
                 'filter': {'paper_title': name_of_the_document},
             },

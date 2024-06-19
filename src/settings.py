@@ -12,8 +12,10 @@ SQLITE_PATH = "data/sqlite/"
 DATABASE_NAME = "database.db"
 
 SQL_REQUEST = """
-SELECT llm.model, llm.number_of_parameters
-FROM Large_Langage_Model llm
+SELECT r.model_name 
+FROM Overview_of_LLM r JOIN 
+Large_Language_Models o
+ON r.model_name = o.model_name;
 """
 
 NUMBER_OF_GENERATIONS = 20

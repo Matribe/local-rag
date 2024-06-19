@@ -65,7 +65,7 @@ class Database:
     def close(self):
         self.conn.close()
 
-    def query(self, query, params):
+    def query(self, query, params=[]):
         self.cursor.execute(query, params)
         return self.cursor.fetchall()
 
@@ -87,7 +87,7 @@ class Database:
             self.create_table(table_name, columns_name, types)
         
     def fill_table(self, table_name, columns, values):
-        self.cursor.execute(f"INSERT INTO {table_name} ({', '.join(columns)}) VALUES ({', '.join(['?']*len(columns))})", values)
+        self.cursor.execute(f"INSERT INTO {table_name} ({', '.join(columns)}) VALUES ({', '.join(['?']*len(columns))})", [value[1:-1] for value in values])
         self.conn.commit()
 
     def fill_tables(self, json_answer):

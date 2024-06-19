@@ -10,25 +10,7 @@ class StringAnalyze:
         This class provides methods for converting dictionaries to formatted strings,
         extracting dictionaries from JSON-like strings, processing results into lists of tuples,
         and identifying the most frequent tuples in a list of responses.
-
-        Methods
-        -------
-        tables_bulletpoints(tables_dict: dict) -> str:
-            Converts a dictionary of tables and their columns into a formatted string with bullet points.
-            
-        extract_llm_answer_dict(answer: str) -> dict:
-            Converts a JSON-like string answer into a dictionary.
-
-        treat_results(results: str) -> list:
-            Processes a string of results into a list of tuples.
-            
-        get_most_frequent_tuples(responses: list, threshold: int) -> list:
-            Identifies and returns the tuples that appear at least `threshold` times in the given list of responses.
-
-        modify_size_tuple(self, current_tuple: tuple, size: int) -> tuple:
-            Increases or decreases the size of a tuple.
     '''
-
 
     def tables_bulletpoints(self, tables_dict) -> str:
         string = ""
@@ -42,16 +24,17 @@ class StringAnalyze:
         final_list = []
         results = results.split("), (")
         for element in results:
-            liste = element.replace("(", "")
-            liste = liste.replace(")", "")
-            liste = liste.replace("'", "")
+            liste = element.replace("(", "").replace(")", "")
             liste = liste.replace("]", "").replace("[", "")
+            liste = liste.replace("'", "")
+            
             liste = liste.split(",")
             liste_analyzed = []
             for data in liste:
                 data = data.lstrip()
-                # data = self.convert_suffix_to_number(data)
-                # data = self.replace_units(data)
+                data = data.lower()
+                data = self.convert_suffix_to_number(data)
+                data = self.replace_units(data)
                 data = self.try_cast_as_integer(data)
                 liste_analyzed.append(data)
             final_list.append(tuple(liste_analyzed))
@@ -139,7 +122,9 @@ class StringAnalyze:
         return table_with_type
     
     def convert_suffix_to_number(self, string: str):
-        data = string.lower()
+        data = string
+        if not data:
+            return ""
         if data[-1] in ['k', 'm', 'b'] and data[:-1].isdigit():
             number = int(data[:-1])
             suffix = data[-1]
@@ -149,11 +134,11 @@ class StringAnalyze:
                 return number * 1000000
             elif suffix == 'b':
                 return number * 1000000000
-        else:
-            return string
+        return string
 
     def replace_units(self, string: str) -> str:
         if not isinstance(string, int):
-            string = string.lower()
-            return string.replace('thousand','*10**3').replace('million','*10**6').replace('billion','*10**9').replace('trillion','*10**12')
+            data = string.replace('thousand','*10**3').replace('million','*10**6').replace('billion','*10**9').replace('trillion','*10**12')
+            if self.is_integer(data[:-6]):
+                return int(eval(data))
         return string
