@@ -17,7 +17,7 @@ class SqlHandler():
 
         # extract for the test
         self.relation_schemes: dict = self.extract_relation_schemes()
-
+        
         # raise catchable exception if query not executable
         self.validator.is_query_executable(self.relation_schemes)
 
