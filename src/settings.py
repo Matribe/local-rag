@@ -17,3 +17,5 @@ FROM Large_Langage_Model llm
 """
 
 NUMBER_OF_GENERATIONS = 20
+
+INITIAL_INDEX_TUPLE = 0
