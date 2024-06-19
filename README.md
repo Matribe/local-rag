@@ -25,7 +25,8 @@ Pour lancer le projet :
 # streamlit run main.py
 python3 main.py
 ```
-
+## Evaluation
+Dataset à tester
 
 
 ## License
