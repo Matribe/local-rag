@@ -41,9 +41,15 @@ class StringAnalyze:
             liste = element.replace("(", "")
             liste = liste.replace(")", "")
             liste = liste.replace("'", "")
+            liste = liste.replace("]", "").replace("[", "")
             liste = liste.split(",")
-            liste = tuple(liste)
-            final_list.append(liste)
+            liste_analyzed = []
+            for data in liste:
+                data = data.lstrip()
+                data = self.convert_suffix_to_number(data)
+                data = self.replace_units(data)
+                liste_analyzed.append(data)
+            final_list.append(tuple(liste_analyzed))
         return final_list
 
     def get_most_frequent_tuples(self, responses, threshold) -> float:
@@ -58,7 +64,7 @@ class StringAnalyze:
                 answer_verified.append(data)
         return answer_verified
     
-    def is_integer(self, string):
+    def is_integer(self, string: str) -> bool:
         try:
             int(string)
             return True
@@ -77,3 +83,23 @@ class StringAnalyze:
                     if self.is_integer(attribut):
                         table_with_type[table]["type"][i] = "INTEGER"
         return table_with_type
+    
+    def convert_suffix_to_number(self, string: str):
+        data = string.lower()
+        if data[-1] in ['k', 'm', 'b'] and data[:-1].isdigit():
+            number = int(data[:-1])
+            suffix = data[-1]
+            if suffix == 'k':
+                return number * 1000
+            elif suffix == 'm':
+                return number * 1000000
+            elif suffix == 'b':
+                return number * 1000000000
+        else:
+            return string
+
+    def replace_units(self, string: str) -> str:
+        if not isinstance(string, int):
+            string = string.lower()
+            return string.replace('thousand','*10**3').replace('million','*10**6').replace('billion','*10**9').replace('trillion','*10**12')
+        return string

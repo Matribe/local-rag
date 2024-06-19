@@ -46,7 +46,7 @@ class Main:
                 answer,_ = self.llm.ask(f"{tuple(columns)} for {table_name}", f"Give me some for {tuple(columns)}")
 
                 answer = self.string_analyze.treat_results(answer)
-                answer = self.string_analyze.verif_size_columns(len(columns), answer)
+                # answer = self.string_analyze.verif_size_columns(len(columns), answer)
                 data_cache.extend(answer)
 
                 print(answer)

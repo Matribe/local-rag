@@ -28,12 +28,15 @@ class SqlHandler():
         relation_schemes = {}
 
         if len(tables) == 1 :
-
-            attributes = self.parser.find_attributes()
-
+            
             table = tables[0]
-            relation_schemes[table] = attributes
 
+            if self.alias_handler.are_all_attributes_aliased() and self.alias_handler.are_all_tables_aliased():
+                attributes: list[str] = self.extract_attributes_for_specific_table(table)
+            else:
+                attributes: list[str] = self.parser.find_attributes()
+ 
+            relation_schemes[table] = attributes
             return relation_schemes
 
         for table in tables:
