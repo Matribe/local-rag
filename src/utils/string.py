@@ -50,8 +50,9 @@ class StringAnalyze:
             liste_analyzed = []
             for data in liste:
                 data = data.lstrip()
-                data = self.convert_suffix_to_number(data)
-                data = self.replace_units(data)
+                # data = self.convert_suffix_to_number(data)
+                # data = self.replace_units(data)
+                data = self.try_cast_as_integer(data)
                 liste_analyzed.append(data)
             final_list.append(tuple(liste_analyzed))
         return final_list
@@ -61,7 +62,6 @@ class StringAnalyze:
         frequent_tuples = [t for t, count in tuple_counts.items() if count >= threshold]
         return frequent_tuples
     
-
     def verif_size_columns(self, size, answer):
         answer_verified = []
         for data in answer:
@@ -74,14 +74,12 @@ class StringAnalyze:
 
         return answer_verified
     
-
     def modify_size_tuple(self, current_tuple: tuple, size: int) -> tuple:
         pass
         if len(current_tuple) > size:
             return self.minus_size_tuple(current_tuple, size, INITIAL_INDEX_TUPLE)
         
         return self.add_size_tuple(current_tuple, size)
-
 
     def add_size_tuple(self, current_tuple: tuple, size: int) -> tuple:
         tuple_length = len(current_tuple)
@@ -99,7 +97,6 @@ class StringAnalyze:
         
         augmented_tuple = tuple(tuple_as_list)
         return augmented_tuple
-                
 
     def minus_size_tuple(self, current_tuple: tuple, size: int, begin_index=0) -> tuple:
         tuple_length = len(current_tuple)
@@ -114,7 +111,6 @@ class StringAnalyze:
         decreased_tuple = tuple(tuple_as_list)
         return decreased_tuple
 
-
     def is_integer(self, string: str) -> bool:
         try:
             int(string)
@@ -122,6 +118,13 @@ class StringAnalyze:
         except ValueError:
             return False
     
+    def try_cast_as_integer(self, string: str) -> int | str:
+        try: 
+            integer = int(string)
+            return integer
+        except:
+            return string
+
     def type_of_attributs(self, tables, answer):
         table_with_type = {}
         for table, columns in tables.items():
