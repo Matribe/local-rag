@@ -1,7 +1,9 @@
 from src.sql.database import Database
 from src.prompt import PromptManage
 from src.llm import Llm
-from src.utils.string import StringAnalyze
+from src.utils.database_table_analyzer import DatabaseTableAnalyzer
+from src.utils.tuple_analyzer import TupleAnalyzer
+from src.utils.tuple_manage import TupleManage
 from src.sql.sqlHandler import SqlHandler
 from src.settings import *
 
@@ -21,8 +23,10 @@ class Main:
         self.prompt_manager = PromptManage()
         self.sql_answer = []
 
-        # utils
-        self.string_analyze = StringAnalyze()
+        #analyzer
+        self.tuple_analyzer = TupleAnalyzer()
+        self.tuple_manage = TupleManage()
+        self.database_table_analyzer = DatabaseTableAnalyzer()
     
 
     def run(self):
@@ -44,14 +48,14 @@ class Main:
 
                 answer,_ = self.llm.ask(f"{tuple(columns)} for {table_name}", f"Give me some for {tuple(columns)}")
 
-                answer = self.string_analyze.treat_results(answer)
-                answer = self.string_analyze.verif_size_columns(len(columns), answer)
+                answer = self.tuple_analyzer.treat_results(answer)
+                answer = self.tuple_manage.verif_size_columns(len(columns), answer)
                 data_cache.extend(answer)
 
                 print(answer)
 
 
-            data_cache = self.string_analyze.get_most_frequent_tuples(data_cache, 3)
+            data_cache = self.tuple_analyzer.get_most_frequent_tuples(data_cache, 3)
             
 
             print(data_cache)
@@ -62,7 +66,7 @@ class Main:
         print("\n------- Réponse du Llm -------")
         print(self.answer)
 
-        self.table_with_type = self.string_analyze.type_of_attributs(self.tables, self.answer)
+        self.table_with_type = self.database_table_analyzer.type_of_attributs(self.tables, self.answer)
 
         # Sql
         self.database.create_tables(self.table_with_type)
