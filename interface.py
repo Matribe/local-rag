@@ -118,7 +118,7 @@ class Interface:
             try :
                 shutil.copy(path, UPLOADS_PATH)
                 self.llm.get_chat_chain(path)
-                self.ai_display("Le fichier spécifié a été :green[vectorisé dans la base de données !]")
+                self.ai_display("Le fichier spécifié a été :green[vectorisé dans la base de donnée !]")
 
             except Exception as e:
                 self.ai_display_error(e)
@@ -131,7 +131,7 @@ class Interface:
         
         uploaded_documents = os.listdir(UPLOADS_PATH)
 
-        self.ai_display("Voici les document chargés dans le programme :")
+        self.ai_display("Voici les documents chargés dans le programme :")
 
         for doc in uploaded_documents:
             
@@ -161,7 +161,7 @@ class Interface:
             if number >= 3 and number<= 30:
 
                 st.session_state.generation_value = number
-                self.ai_display(f"Changement du nombre de generation par {number} !")
+                self.ai_display(f"Changement du nombre de générations par {number} !")
                 return
             
             self.ai_display_error(ValueError("The specified value isn't between 3 and 30."))
@@ -208,7 +208,7 @@ class Interface:
                 
                 except Exception as e:
 
-                    status.update(label="L'initialisation a echouee !", 
+                    status.update(label="L'initialisation a echouée !", 
                                   state="error", 
                                   expanded=False)
                     
@@ -295,12 +295,12 @@ class Interface:
 
                 df = pd.DataFrame(execute.sql_answer, columns=("colonne %d" % i for i in range(1,len(columns_database)+1)))
                 st.table(df)
-                
+
                 self.add_chat_historic('None', df, 'table')
 
             else:
 
-                self.ai_display(':red[Aucun réponse trouvée...]')
+                self.ai_display(':red[Aucune réponse trouvée...]')
 
         except Exception as e:
             self.ai_display_error(e)
