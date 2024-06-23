@@ -118,7 +118,7 @@ class Interface:
             try :
                 shutil.copy(path, UPLOADS_PATH)
                 self.llm.get_chat_chain(path)
-                self.ai_display("Le fichier spécifié a été :green[vectorisé dans la base de donnée !]")
+                self.ai_display("Le fichier spécifié a été :green[vectorisé dans la base de données !]")
 
             except Exception as e:
                 self.ai_display_error(e)
@@ -172,7 +172,7 @@ class Interface:
 
     def see_number_of_generations(self):
         
-        self.ai_display(f'''Le nombre de génération actuel est : {self.number_of_generations}  
+        self.ai_display(f'''Le nombre de générations actuel est : {self.number_of_generations}  
                             Pour le modifier tapez `--set <Votre valeur>`.''')
         
 # --help
@@ -208,7 +208,7 @@ class Interface:
                 
                 except Exception as e:
 
-                    status.update(label="L'initialisation a echouée !", 
+                    status.update(label="L'initialisation a echoué !", 
                                   state="error", 
                                   expanded=False)
                     
@@ -344,4 +344,9 @@ class Interface:
 
 if __name__ == "__main__":
     gui = Interface()
+
+    llm = Llm()
+    for file in os.listdir(UPLOADS_PATH):
+        llm.get_chat_chain(UPLOADS_PATH + str(file))
+    
     gui.run()
