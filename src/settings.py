@@ -62,7 +62,7 @@ PROJECT_PROMPT = """
                     ### Résumé :  
                       
                     SQL versus GPT est un sujet proposé par la faculté de science de Aix-Marseille pour l'UE
-                    *Projet Mathématique Informatique*.  
+                    *Projet Mathématiques Informatique*.  
                     L'objectif de ce dernier est de marier dans un programme l'emploi de SQL sur des données non 
                     structurées (comme du texte) à l'aide de l'utilisation des Large Language Models. 
                     Vous êtes en train d'utiliser le chatBOT permettant de manipuler le programme proposé 
@@ -71,14 +71,14 @@ PROJECT_PROMPT = """
                        
                     ### Remarques Importantes :
                       
-                    - Les :orange[**formules SQL doivent êtres écrites correctement**],
-                      sinon elle seront jugées inutilisables.
+                    - Les :orange[**formules SQL doivent être écrites correctement**],
+                      sinon elles seront jugées inutilisables.
                     - Les formules SQL avec de multiples tables 
                     :orange[**doivent utiliser nécessairement des alias**] !  
-                    Seule les requêtes utilisant 2 tables ou plus sont concernées.
-                    - Le nombre de générations réglables directement via le chatBOT est le nombre de fois que le LLM
+                    Seules les requêtes utilisant 2 tables ou plus sont concernées.
+                    - Le nombre de générations réglables directement via le chatBOT est le nombre de fois ou le LLM
                     relance votre requête. Plus le nombre est grand, plus le nombre d'hallucinations est minimisé.  
-                    Cela car seuls les résultats 3 fois identitques sont fusionnés et gardés dans la réponse.  
-                    Cependant, pour un trop grand nombre l'effet inverse peut se produire. Initialiement ce nombre
+                    Cela car seuls les résultats 3 fois identiques sont fusionnés et gardés dans la réponse.  
+                    Cependant, pour un trop grand nombre, l'effet inverse peut se produire. Initialiement ce nombre
                     est de 20. 
                 """
