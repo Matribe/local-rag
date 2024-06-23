@@ -6,7 +6,6 @@ from src.utils.tuple_analyzer import TupleAnalyzer
 from src.utils.tuple_manage import TupleManage
 from src.sql.sqlHandler import SqlHandler
 from src.settings import *
-import os
 
 
 
@@ -32,7 +31,6 @@ class Main:
 
     def run(self):
         # Embeddings
-        print(os.getcwd())
         self.llm.get_chat_chain(UPLOADS_PATH + "Overview_of_LLMs.md")
         self.llm.get_chat_chain(UPLOADS_PATH + "Rock_Climbing_Overview.docx")
         self.llm.get_chat_chain(UPLOADS_PATH + "The_Great_Gatsby.pdf")
