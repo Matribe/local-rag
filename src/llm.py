@@ -65,9 +65,8 @@ class Llm:
 
         
 
-    def ask(self, query: str, example: str, max_len = 1024):
-        self.model = ChatOllama(model=MODEL_LLM, num_predict=max_len)
-
+    def ask(self, query: str, example: str):
+        
         result = self.chain.invoke({"input": query, "example": example})
 
         if not result["context"]:
