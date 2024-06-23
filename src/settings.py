@@ -29,9 +29,9 @@ USER = "user"
 AI = "assistant"
 
 INITIAL_PROMPT = """
-                    **Bienvenu sur le chatBOT du projet ChatGPT vs SQL.**  
-                    Pour interagir avec les rêquetes SQL : 
-                    - Tester une rêquete SQL en la tapant `--sql <Formule SQL>`.
+                    **Bienvenue sur le chatBOT du projet ChatGPT vs SQL.**  
+                    Pour interagir avec les requêtes SQL : 
+                    - Tester une requête SQL en la tapant `--sql <Formule SQL>`.
                     - Lancer le dataset de test en tapant `--sql run tests`.
 
                     Pour intéragir avec les documents du RAG :
