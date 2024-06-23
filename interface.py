@@ -56,11 +56,6 @@ class Interface:
 
                     case 'doc_display':
                         st.success(message['content'])
-                    
-                    case 'file_uploader':
-                        uploader = st.file_uploader(message['content'])
-                        if uploader is not None:
-                            print(uploader.name)
 
             # Setting chat input
             if prompt := st.chat_input("Que voulez-vous faire ?"):
@@ -280,9 +275,9 @@ class Interface:
             time.sleep(2)
             my_bar.empty()
 
-            print("pass1")
-            table_with_type = execute.database_table_analyzer.type_of_attributs(execute.tables, answer)
-            print("pass print")
+
+            table_with_type = execute.database_table_analyzer.type_of_attributs(execute.tables, answer_dict)
+
             # Sql
             execute.database.create_tables(table_with_type)
             execute.database.fill_tables(answer_dict)
@@ -292,15 +287,19 @@ class Interface:
             self.ai_display(response)
             st.code(code, language='sql')
             self.add_chat_historic('None', code, 'sql_code')
-            print("pass2")
+
             # Displaying response if not empty
             if execute.sql_answer:
+
                 columns_database = execute.sql_answer[0] if isinstance(execute.sql_answer[0], tuple) else execute.sql_answer
+
                 df = pd.DataFrame(execute.sql_answer, columns=("colonne %d" % i for i in range(1,len(columns_database)+1)))
                 st.table(df)
+                
                 self.add_chat_historic('None', df, 'table')
-                print("pass3")
+
             else:
+
                 self.ai_display(':red[Aucun réponse trouvée...]')
 
         except Exception as e:
